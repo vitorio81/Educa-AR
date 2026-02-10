@@ -1,0 +1,12 @@
+@use "../../styles/variables" as *;
+
+.login-container {
+  height: 100vh;
+  background-color: $bg-dark;
+  
+  .card {
+    background-color: $surface-dark;
+    border: 1px solid #333;
+    color: $text-main;
+  }
+}

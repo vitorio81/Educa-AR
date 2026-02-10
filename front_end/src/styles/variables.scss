@@ -1,0 +1,14 @@
+$bg-dark: #121212;        // Fundo principal
+$surface-dark: #1e1e1e;   // Cor de cards, inputs e modais
+$primary-cyan: #00d4ff;   // Cor de destaque (botões, links)
+$text-main: #ffffff;      // Texto principal
+$text-muted: #b3b3b3;     // Texto secundário (labels, placeholders)
+$border-color: #333333;   // Bordas sutis
+
+// Sobrescrevendo o Bootstrap para o modo escuro
+$body-bg: $bg-dark;
+$body-color: $text-main;
+$card-bg: $surface-dark;
+$input-bg: $surface-dark;
+$input-color: $text-main;
+$input-border-color: $border-color;

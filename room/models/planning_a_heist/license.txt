@@ -1,0 +1,11 @@
+Model Information:
+* title:	Planning a heist
+* source:	https://sketchfab.com/3d-models/planning-a-heist-b41131f60a7a48419e9a8ad202d607ef
+* author:	Nours (https://sketchfab.com/mynours)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Planning a heist" (https://sketchfab.com/3d-models/planning-a-heist-b41131f60a7a48419e9a8ad202d607ef) by Nours (https://sketchfab.com/mynours) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

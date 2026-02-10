@@ -1,0 +1,276 @@
+// 1. Importação das variáveis
+@use "./variables" as *;
+
+// 2. Importação do Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// 3. Reset e Estilos de Base
+html, body, #root {
+  height: 100%;
+  background-color: $bg-dark;
+  color: $text-main;
+  margin: 0;
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+// 4. Layout e Sidebar Tech
+.sidebar-tech {
+  width: 260px;
+  background-color: rgba($surface-dark, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 1040;
+}
+
+// 5. Classes de Vidro e Superfícies
+.bg-surface {
+  background-color: $surface-dark !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-effect {
+  background: rgba($surface-dark, 0.8) !important; // Aumentado para melhor leitura
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  z-index: 1070; // Garante que flutue sobre tudo
+}
+
+// 6. Tipografia e Cores
+.text-cyan {
+  color: $primary-cyan !important;
+  text-shadow: 0 0 15px rgba($primary-cyan, 0.3);
+}
+
+.tracking-tight { letter-spacing: -0.02em; }
+.tracking-wider { letter-spacing: 0.1em; }
+
+.status-label-refined {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f8fafc;
+  opacity: 0.9;
+}
+
+.text-muted-custom {
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+// 7. Tech Card e Tabela Refinada
+.tech-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%), $surface-dark;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  position: relative;
+  
+  // Alterado de hidden para visible para não cortar os dropdowns das linhas
+  overflow: visible !important; 
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    z-index: 1;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    border-color: rgba($primary-cyan, 0.4) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.table-dark-refined {
+  --bs-table-bg: transparent;
+  thead th {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #64748b;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+  tbody tr {
+    transition: background 0.2s ease;
+    &:hover { background-color: rgba(255, 255, 255, 0.015) !important; }
+  }
+}
+
+// 8. Botões e Ações
+.btn-primary-tech {
+  background: $primary-cyan;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba($primary-cyan, 0.3);
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    background: lighten($primary-cyan, 10%);
+    box-shadow: 0 6px 20px rgba($primary-cyan, 0.4);
+  }
+}
+
+.btn-action-sutil {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: $primary-cyan;
+  }
+}
+
+// 9. Formulários e Seleção (CORREÇÃO DA SETA)
+.form-control, .form-select-tech {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  appearance: none; // Remove a seta nativa
+  
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: $primary-cyan !important;
+    box-shadow: 0 0 0 4px rgba($primary-cyan, 0.1) !important;
+    outline: none;
+  }
+}
+
+.form-select-tech {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px 12px;
+  padding-right: 3rem !important; // Espaço para a seta não cortar
+  cursor: pointer;
+
+  option {
+    background-color: #1a1d21;
+    color: #fff;
+  }
+}
+
+// 10. Dropdowns e Menus (CORREÇÃO DO CORTE)
+.dropdown-menu {
+  z-index: 1060 !important;
+  background: rgba(26, 29, 33, 0.95) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+
+  .dropdown-item {
+    color: #cbd5e1 !important;
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #fff !important;
+    }
+
+    &.text-danger:hover {
+      background: rgba(220, 53, 69, 0.1) !important;
+    }
+  }
+}
+
+// Ajuste para evitar que a table-responsive do Bootstrap use overflow:hidden
+.table-responsive {
+  overflow: visible !important;
+}
+
+// 11. Navegação Sidebar
+.nav-link-custom {
+  color: $text-muted;
+  transition: all 0.25s ease;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.active {
+    color: $primary-cyan !important;
+    background: rgba($primary-cyan, 0.1);
+    box-shadow: inset 0 0 0 1px rgba($primary-cyan, 0.2);
+  }
+}
+
+// 12. Status e Animações
+.status-dot-pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  &.active {
+    background-color: $primary-cyan;
+    animation: pulse-cyan-refined 2.5s infinite;
+  }
+  &.inactive { background-color: #334155; }
+}
+
+@keyframes pulse-cyan-refined {
+  0% { box-shadow: 0 0 0 0 rgba($primary-cyan, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba($primary-cyan, 0); }
+  100% { box-shadow: 0 0 0 0 rgba($primary-cyan, 0); }
+}
+
+.fade-in { animation: fadeIn 0.5s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// 13. Scrollbar e Utilitários
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  &:hover { background: rgba($primary-cyan, 0.4); }
+}
+
+// 14. Ajuste Preciso do Modal (Compensação do Navbar)
+.modal {
+  // O valor de 70px deve ser próximo à altura do seu Navbar. 
+  // Isso empurra o ponto inicial do modal para baixo do Navbar, 
+  // mas mantém o resto do comportamento normal.
+  top: 70px !important; 
+  height: calc(100% - 70px) !important;
+}
+
+.modal-dialog-centered {
+  // Removemos as margens agressivas que colocamos antes
+  margin-top: 0 !important; 
+  // Garante que o modal não "estique" até o topo
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 1rem);
+}
+
+.cursor-pointer { cursor: pointer; }
