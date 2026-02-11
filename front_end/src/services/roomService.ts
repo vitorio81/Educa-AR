@@ -1,26 +1,31 @@
 import api from "./api";
+import { type Room, type CreateRoomData } from "../types/room";
 
-// Função auxiliar para pegar o token rapidamente
 const getHeaders = () => {
   const token = localStorage.getItem("@EducaAR:token");
   return { headers: { Authorization: `Bearer ${token}` } };
 };
 
 export const roomService = {
-  // Listar
-  getAll: (userId: number | string) =>
-    api.get(`/rooms/${userId}`, getHeaders()).then((res) => res.data),
+  getAll: async (userId: number): Promise<Room[]> => {
+    const response = await api.get(`/rooms/${userId}`, getHeaders());
+    return response.data;
+  },
 
-  // Criar
-  create: (data: any) =>
-    api.post(`/room`, data, getHeaders()).then((res) => res.data),
+  create: async (data: CreateRoomData): Promise<Room> => {
+    const response = await api.post(`/room`, data, getHeaders());
+    return response.data;
+  },
 
-  // Atualizar
-  update: (roomId: number, data: any) =>
-    api.put(`/room/${roomId}`, data, getHeaders()).then((res) => res.data),
+  update: async (
+    roomId: number,
+    data: Partial<CreateRoomData>,
+  ): Promise<Room> => {
+    const response = await api.put(`/room/${roomId}`, data, getHeaders());
+    return response.data;
+  },
 
-  // Excluir
-  // Importante: No delete, o segundo argumento SÃO as configurações (onde vai o header)
-  delete: (roomId: number) =>
-    api.delete(`/room/${roomId}`, getHeaders()).then((res) => res.data),
+  delete: async (roomId: number): Promise<void> => {
+    await api.delete(`/room/${roomId}`, getHeaders());
+  },
 };

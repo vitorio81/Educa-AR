@@ -1,24 +1,27 @@
 import { useState } from "react";
-import { Plus, LayoutGrid } from "lucide-react"; // Adicionado LayoutGrid
-import { TurmaCard } from "../../components/SalaCard";
-import { FormTurma } from "../../components/SalaForm";
-import { useRooms, type Room } from "../../hooks/useRooms";
+import { Plus, LayoutGrid } from "lucide-react";
+import { RoomCard } from "../../components/RoomCard";
+import { RoomForm } from "../../components/RoomForm";
+import { useRooms } from "../../hooks/useRooms";
+import { type Room } from "../../types/room"; 
 
-export const Salas = () => {
+export const Rooms = () => {
   const storedUser = localStorage.getItem("@EducaAR:user");
   const user = storedUser ? JSON.parse(storedUser) : null;
+
   const { rooms, loading, error, handleCreate, handleUpdate, handleDelete } =
     useRooms(user?.userId);
+
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
 
   return (
-    <div className="container py-4">
-      {/* Header Refinado */}
+    <div className="container py-4 min-vh-100">
+      {/* Header Sincronizado */}
       <div className="d-flex justify-content-between align-items-end mb-5">
         <div>
           <div className="d-flex align-items-center gap-2 mb-1">
             <LayoutGrid size={20} className="text-cyan" />
-            <h2 className="text-white fw-bold mb-0">Gerenciar Turmas</h2>
+            <h2 className="text-white fw-bold mb-0">Gerenciar Salas</h2>
           </div>
           <p className="text-muted mb-0 small">
             Crie, edite e monitore o status das suas salas de aula.
@@ -28,10 +31,10 @@ export const Salas = () => {
         <button
           className="btn btn-cyan d-flex align-items-center gap-2 px-4 fw-bold shadow-sm"
           data-bs-toggle="modal"
-          data-bs-target="#modalTurma"
+          data-bs-target="#modalRoom"
           onClick={() => setEditingRoom(null)}
         >
-          <Plus size={18} strokeWidth={3} /> NOVA TURMA
+          <Plus size={18} strokeWidth={3} /> NOVA SALA
         </button>
       </div>
 
@@ -43,18 +46,18 @@ export const Salas = () => {
         )}
 
         {error && (
-          <div className="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger">
-            {error}
+          <div className="col-12">
+            <div className="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger">
+              {error}
+            </div>
           </div>
         )}
 
         {!loading &&
           rooms.map((room) => (
             <div className="col-12 col-md-6 col-lg-4" key={room.roomId}>
-              <TurmaCard
-                nome={room.roomName}
-                descricao={room.roomDescription}
-                status={room.roomStatus || "active"}
+              <RoomCard
+                room={room} // Passamos o objeto inteiro, o card cuida do resto
                 onEdit={() => setEditingRoom(room)}
                 onDelete={() => handleDelete(room.roomId)}
               />
@@ -70,42 +73,34 @@ export const Salas = () => {
         )}
       </div>
 
-      {/* Modal - Estilizado via CSS Global que já atualizamos */}
+      {/* Modal Sincronizado */}
       <div
         className="modal fade"
-        id="modalTurma"
+        id="modalRoom"
         tabIndex={-1}
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
+          <div className="modal-content bg-dark border-secondary">
             <div className="modal-header border-bottom border-secondary border-opacity-25">
               <h5 className="modal-title fw-bold text-white">
-                {editingRoom ? "✨ Editar Turma" : "🚀 Nova Turma"}
+                {editingRoom ? "✨ Editar Sala" : "🚀 Nova Sala"}
               </h5>
               <button
                 type="button"
                 className="btn-close btn-close-white"
                 data-bs-dismiss="modal"
+                aria-label="Close"
               />
             </div>
             <div className="modal-body p-4">
-              <FormTurma
-                dadosIniciais={
-                  editingRoom
-                    ? {
-                        id: editingRoom.roomId,
-                        nome: editingRoom.roomName,
-                        descricao: editingRoom.roomDescription,
-                        status: editingRoom.roomStatus,
-                      }
-                    : undefined
-                }
+              <RoomForm
+                dadosIniciais={editingRoom || undefined}
                 botaoLabel={editingRoom ? "Salvar Alterações" : "Criar Turma"}
                 onSubmit={
                   editingRoom
                     ? (data) => handleUpdate(editingRoom.roomId, data)
-                    : handleCreate
+                    : (data) => handleCreate({ ...data, userId: user?.userId })
                 }
               />
             </div>

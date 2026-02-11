@@ -47,14 +47,10 @@ export const Home = () => {
                   <div className="d-flex align-items-center justify-content-between mt-auto pt-3 border-top border-secondary border-opacity-50">
                     <div className="status-indicator">
                       <span
-                        className={`status-dot ${room.roomStatus === "ativa" ? "active" : "inactive"}`}
+                        className={`status-dot ${room.roomStatus}`}
                       ></span>
                       <span className="status-text">{room.roomStatus}</span>
                     </div>
-
-                    <button className="btn btn-sm btn-link text-cyan text-decoration-none p-0 fw-medium">
-                      Entrar na Sala →
-                    </button>
                   </div>
                 </div>
               </div>

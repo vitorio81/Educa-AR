@@ -1,4 +1,4 @@
-import { Mail, Edit3, Trash2, Clock } from "lucide-react";
+import {Edit3, Trash2} from "lucide-react";
 
 interface ConvidadoProps {
   convidadoId: number;
@@ -30,12 +30,11 @@ export const ConvidadoRow = ({
 
       <td className="py-4">
         <div className="d-flex align-items-center gap-2">
-          {/* Aplica 'active' se for ativo, 'inactive' caso contrário */}
           <span
             className={`status-dot-pulse ${status === "ativo" ? "active" : "inactive"}`}
           ></span>
           <span className="status-label-refined">
-            {status === "ativo" ? "Acesso Liberado" : "Bloqueado"}
+            {status}
           </span>
         </div>
       </td>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { registroService } from "../../services/registro";
-import type { CreateUserData } from "../../services/registro";
+import { userService } from "../../services/userService";
 
 export const Register = () => {
   const [userName, setUserName] = useState("");
@@ -18,7 +17,8 @@ export const Register = () => {
     setError("");
 
     try {
-      await registroService.create({
+      // 2. Chamando o userService sincronizado
+      await userService.create({
         userName,
         userEmail,
         userSecret,
@@ -27,6 +27,7 @@ export const Register = () => {
       alert("Conta criada com sucesso!");
       navigate("/login", { replace: true });
     } catch (err: any) {
+      // Tratamento de erro consistente com o HttpError do seu back-end
       setError(err.response?.data?.message || "Erro ao realizar cadastro.");
     } finally {
       setLoading(false);
@@ -34,10 +35,9 @@ export const Register = () => {
   };
 
   return (
-    /* container-login com $bg-dark */
     <div
       className="vh-100 d-flex align-items-center justify-content-center"
-      style={{ backgroundColor: "#121212" }} // Simulação do seu $bg-dark
+      style={{ backgroundColor: "#121212" }}
     >
       <div
         className="card p-4 shadow border-0"
@@ -45,9 +45,9 @@ export const Register = () => {
           width: "100%",
           maxWidth: "400px",
           borderRadius: "8px",
-          backgroundColor: "#1e1e1e", // Simulação do seu $surface-dark
-          border: "1px solid #333", // Conforme seu SCSS
-          color: "#ffffff", // Simulação do seu $text-main
+          backgroundColor: "#1e1e1e",
+          border: "1px solid #333",
+          color: "#ffffff",
         }}
       >
         <div className="text-center mb-4">
@@ -71,7 +71,7 @@ export const Register = () => {
             <input
               type="text"
               className="form-control bg-dark text-white border-secondary"
-              placeholder="Seu Primeiro nome"
+              placeholder="Seu nome completo"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required

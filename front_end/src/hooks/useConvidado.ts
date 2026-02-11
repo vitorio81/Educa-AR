@@ -1,48 +1,90 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { convidadoService } from "../services/convidadosService";
 
+// Interface sincronizada com Backend
 export interface Convidado {
-  visitorId: number; // Antes era 'id'
-  visitorEmail: string; // Antes era 'email'
-  visitorStatus: "ativo" | "inativo"; // Antes era 'status'
+  visitorId: number;
+  visitorEmail: string;
+  visitorStatus: "ativo" | "inativo";
   roomIds: number[];
+  visitedAt?: string;
 }
-export const useConvidados = (userId: number | string) => {
+
+// Tipo para criação
+export type CriarConvidadoData = Omit<Convidado, "visitorId" | "visitedAt"> & {
+  visitorPassword?: string;
+};
+
+export const useConvidados = (userId?: number, roomId?: number | string) => {
   const [convidados, setConvidados] = useState<Convidado[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const carregarConvidados = async () => {
+  // 🔥 Normaliza roomId (pode vir string da URL)
+  const parsedRoomId = roomId !== undefined ? Number(roomId) : undefined;
+
+  const carregarConvidados = useCallback(async () => {
+    if (!userId && !parsedRoomId) return;
+
     try {
       setLoading(true);
-      const data = await convidadoService.getByUser(userId);
-      setConvidados(data); // A API retorna Visitor[]
+
+      let data: Convidado[] = [];
+
+      // 🔥 Prioridade: buscar pela room
+      if (parsedRoomId) {
+        data = await convidadoService.getByRoomId(parsedRoomId);
+      } else if (userId) {
+        data = await convidadoService.getByUser(userId);
+      }
+
+      setConvidados(data);
+    } catch (error) {
+      console.error("Erro ao carregar convidados:", error);
     } finally {
       setLoading(false);
     }
+  }, [userId, parsedRoomId]);
+
+  // 🔥 Criar convidado
+  const criarConvidado = async (data: CriarConvidadoData) => {
+    try {
+      await convidadoService.create(data);
+      await carregarConvidados();
+    } catch (error) {
+      console.error("Erro ao criar convidado:", error);
+      throw error;
+    }
   };
 
-  const criarConvidado = async (data: any) => {
-    await convidadoService.create(data);
-    await carregarConvidados();
-    console.log("Convidado criado com sucesso:", data); // 👈 debug
+  // 🔥 Atualizar convidado
+  const atualizarConvidado = async (
+    visitorId: number,
+    data: Partial<CriarConvidadoData>,
+  ) => {
+    try {
+      await convidadoService.update(visitorId, data);
+      await carregarConvidados();
+    } catch (error) {
+      console.error("Erro ao atualizar convidado:", error);
+      throw error;
+    }
   };
 
-  const atualizarConvidado = async (id: number, data: any) => {
-    console.log("Atualizando convidado:", data); // 👈 debug
-     await convidadoService.update(id, data);
-
-    await carregarConvidados();
+  // 🔥 Excluir convidado
+  const excluirConvidado = async (visitorId: number) => {
+    try {
+      await convidadoService.delete(visitorId);
+      await carregarConvidados();
+    } catch (error) {
+      console.error("Erro ao excluir convidado:", error);
+      throw error;
+    }
   };
 
-
-  const excluirConvidado = async (id: number) => {
-    await convidadoService.delete(id);
-    await carregarConvidados();
-  };
-
+  // 🔥 Recarrega quando mudar user ou room
   useEffect(() => {
-    if (userId) carregarConvidados();
-  }, [userId]);
+    carregarConvidados();
+  }, [carregarConvidados]);
 
   return {
     convidados,
@@ -50,5 +92,6 @@ export const useConvidados = (userId: number | string) => {
     criarConvidado,
     atualizarConvidado,
     excluirConvidado,
+    refetch: carregarConvidados,
   };
 };

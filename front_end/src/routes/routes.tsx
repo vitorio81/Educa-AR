@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 
 import { Login } from "../pages/Login/Login";
-import { Register } from "../pages/Registro/Registro";
+import { Register } from "../pages/User/User";
 import { Home } from "../pages/Home/Home";
-import { Salas } from "../pages/Salas/Salas";
+import { Rooms } from "../pages/Room/Room";
 import { Convidados } from "../pages/Convidados/Convidados";
 import Objetos from "../pages/Objetos/Objetos";
 
@@ -61,8 +61,7 @@ export const AppRoutes = () => {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          
-          <Route path="/" element={<LoginRoute />} />
+          <Route path="/" element={<InitialRedirect />} />
 
           <Route path="/login" element={<LoginRoute />} />
           <Route path="/register" element={<RegisterRoute />} />
@@ -70,9 +69,11 @@ export const AppRoutes = () => {
           <Route element={<PrivateRoute />}>
             <Route element={<LayoutComMenu />}>
               <Route path="/home" element={<Home />} />
-              <Route path="/salas" element={<Salas />} />
+              <Route path="/salas" element={<Rooms />} />
               <Route path="/convidados" element={<Convidados />} />
               <Route path="/objetos" element={<Objetos />} />
+              <Route path="/convidados/:roomId" element={<Convidados />} />
+              <Route path="/objetos/:roomId" element={<Objetos />} />
             </Route>
           </Route>
 

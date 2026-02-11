@@ -1,37 +1,47 @@
 import { useState, useEffect } from "react";
 import { InputCustom } from "./InputCustom";
+import { type Room } from "../types/room"; // Importando a interface sincronizada
 
-interface FormTurmaProps {
-  dadosIniciais?: {
-    id?: number;
-    nome: string;
-    descricao: string;
-    status: string;
-  };
+interface RoomFormProps {
+  dadosIniciais?: Room; // Usa o formato que vem do Back-end
   botaoLabel: string;
   onSubmit: (data: any) => Promise<void>;
 }
 
-export const FormTurma = ({ dadosIniciais, botaoLabel, onSubmit }: FormTurmaProps) => {
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [status, setStatus] = useState("ativa");
+export const RoomForm = ({
+  dadosIniciais,
+  botaoLabel,
+  onSubmit,
+}: RoomFormProps) => {
+  // Sincronizando estados com as chaves do Back-end
+  const [roomName, setRoomName] = useState("");
+  const [roomDescription, setRoomDescription] = useState("");
+  const [roomStatus, setRoomStatus] = useState<"ativa" | "inativa">("ativa");
 
+  // Carrega os dados para edição
   useEffect(() => {
-    setNome(dadosIniciais?.nome || "");
-    setDescricao(dadosIniciais?.descricao || "");
-    setStatus(dadosIniciais?.status || "ativa");
+    if (dadosIniciais) {
+      setRoomName(dadosIniciais.roomName || "");
+      setRoomDescription(dadosIniciais.roomDescription || "");
+      setRoomStatus(dadosIniciais.roomStatus || "ativa");
+    }
   }, [dadosIniciais]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     await onSubmit({
-      id: dadosIniciais?.id,
-      roomName: nome,
-      roomDescription: descricao,
-      status: status,
+      roomId: dadosIniciais?.roomId,
+      roomName,
+      roomDescription,
+      roomStatus,
     });
+
+    const modal = document.getElementById("modalRoom");
+    const instance = (window as any).bootstrap.Modal.getInstance(modal);
+    instance?.hide();
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
@@ -39,8 +49,8 @@ export const FormTurma = ({ dadosIniciais, botaoLabel, onSubmit }: FormTurmaProp
         label="Nome da Turma"
         type="text"
         placeholder="Ex: Engenharia de Software AR"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
+        value={roomName}
+        onChange={(e) => setRoomName(e.target.value)}
         required
       />
 
@@ -49,11 +59,11 @@ export const FormTurma = ({ dadosIniciais, botaoLabel, onSubmit }: FormTurmaProp
           Descrição
         </label>
         <textarea
-          className="form-control" // Classe global já estilizada
+          className="form-control bg-dark text-white border-secondary"
           rows={3}
           placeholder="Descreva o propósito desta sala..."
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
+          value={roomDescription}
+          onChange={(e) => setRoomDescription(e.target.value)}
           required
         />
       </div>
@@ -63,9 +73,9 @@ export const FormTurma = ({ dadosIniciais, botaoLabel, onSubmit }: FormTurmaProp
           Status do Sistema
         </label>
         <select
-          className="form-select" // Classe global já estilizada
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
+          className="form-select bg-dark text-white border-secondary"
+          value={roomStatus}
+          onChange={(e) => setRoomStatus(e.target.value as "ativa" | "inativa")}
         >
           <option value="ativa">Ativa (Visível para alunos)</option>
           <option value="inativa">Inativa (Oculta)</option>
@@ -82,8 +92,7 @@ export const FormTurma = ({ dadosIniciais, botaoLabel, onSubmit }: FormTurmaProp
         </button>
         <button
           type="submit"
-          className="btn btn-cyan w-100 fw-bold"
-          data-bs-dismiss="modal"
+          className="btn btn-cyan w-100 fw-bold shadow-sm"
         >
           {botaoLabel}
         </button>

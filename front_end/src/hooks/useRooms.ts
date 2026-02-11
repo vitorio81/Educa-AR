@@ -1,17 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { roomService } from "../services/roomService";
+import { roomService } from "../services/roomService";import { type Room } from "../types/room";
 
-export interface Room {
-  roomId: number;
-  userId: number;
-  roomName: string;
-  roomDescription: string;
-  roomStatus: "ativa" | "inativa" | "active" | "inactive";
-  createdAt?: string;
-  updatedAt?: string;
-}
 
-export const useRooms = (userId: number | string | undefined) => {
+export const useRooms = (userId: number | undefined) => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

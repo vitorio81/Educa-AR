@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import { authApi } from "../../services/authApi";
+import { useAuth } from "../contexts/AuthContext";
+import { authApi } from "../services/authService";
 
 export const useLogin = () => {
   const { login } = useAuth();
@@ -10,6 +10,7 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // No useLogin.ts
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -17,8 +18,8 @@ export const useLogin = () => {
 
     try {
       const response = await authApi.post("/login", {
-        email,
-        password,
+        userEmail: email,
+        userSecret: password, 
       });
 
       login(response.data.token, response.data.user);
@@ -38,4 +39,4 @@ export const useLogin = () => {
     loading,
     error,
   };
-};
+};;
