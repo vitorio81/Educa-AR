@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { convidadoService } from "../services/convidadosService";
 
 export interface Convidado {
-  visitorId: number;      // Antes era 'id'
-  visitorEmail: string;   // Antes era 'email'
+  visitorId: number; // Antes era 'id'
+  visitorEmail: string; // Antes era 'email'
   visitorStatus: "ativo" | "inativo"; // Antes era 'status'
-  roomId: number;
+  roomIds: number[];
 }
 export const useConvidados = (userId: number | string) => {
   const [convidados, setConvidados] = useState<Convidado[]>([]);
@@ -24,12 +24,16 @@ export const useConvidados = (userId: number | string) => {
   const criarConvidado = async (data: any) => {
     await convidadoService.create(data);
     await carregarConvidados();
+    console.log("Convidado criado com sucesso:", data); // 👈 debug
   };
 
   const atualizarConvidado = async (id: number, data: any) => {
-    await convidadoService.update(id, data);
+    console.log("Atualizando convidado:", data); // 👈 debug
+     await convidadoService.update(id, data);
+
     await carregarConvidados();
   };
+
 
   const excluirConvidado = async (id: number) => {
     await convidadoService.delete(id);

@@ -25,6 +25,7 @@ export const Convidados = () => {
         const updateData: Record<string, any> = {
           visitorEmail: data.visitorEmail,
           visitorStatus: data.visitorStatus,
+          roomIds: data.roomIds, 
         };
 
         if (data.visitorPassword && data.visitorPassword.trim() !== "") {

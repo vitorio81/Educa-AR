@@ -10,42 +10,51 @@ export const FormConvidado = ({
   const [visitorEmail, setVisitorEmail] = useState("");
   const [visitorPassword, setVisitorPassword] = useState("");
   const [visitorStatus, setVisitorStatus] = useState("ativo");
-  const [roomId, setRoomId] = useState<number | "">("");
+  const [roomIds, setRoomIds] = useState<number[]>([]);
 
-  // Sincroniza e LIMPA o formulário
   useEffect(() => {
     if (convidadoInicial) {
       setVisitorEmail(convidadoInicial.visitorEmail || "");
       setVisitorStatus(convidadoInicial.visitorStatus || "ativo");
-      setRoomId(convidadoInicial.roomId || "");
+      // Mapeia os IDs vindos do back (ajuste o nome da propriedade se necessário)
+      setRoomIds(
+        convidadoInicial.roomIds ||
+          (convidadoInicial.roomId ? [convidadoInicial.roomId] : []),
+      );
     } else {
-
       setVisitorEmail("");
       setVisitorPassword("");
       setVisitorStatus("ativo");
-      setRoomId("");
+      setRoomIds([]);
     }
   }, [convidadoInicial]);
 
+  const handleCheckboxChange = (roomId: number) => {
+    setRoomIds(
+      (prev) =>
+        prev.includes(roomId)
+          ? prev.filter((id) => id !== roomId) // Remove se já estiver selecionado
+          : [...prev, roomId], // Adiciona se não estiver
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const payload: any = {
       visitorEmail,
       visitorStatus,
-      roomId: Number(roomId),
+      roomIds: roomIds, 
     };
 
     if (visitorPassword) payload.visitorPassword = visitorPassword;
 
     try {
       await onSubmit(payload);
-
       if (!convidadoInicial) {
         setVisitorEmail("");
         setVisitorPassword("");
         setVisitorStatus("ativo");
-        setRoomId("");
+        setRoomIds([]);
       }
     } catch (error) {
       console.error("Erro ao salvar:", error);
@@ -54,14 +63,11 @@ export const FormConvidado = ({
 
   return (
     <form className="mt-2" onSubmit={handleSubmit}>
-      {/* ... (campos de input permanecem iguais) ... */}
-
       <div className="mb-4">
         <InputCustom
           label="E-mail do Convidado"
           type="email"
           value={visitorEmail}
-          placeholder="emailexemplo@gmail.com"
           onChange={(e) => setVisitorEmail(e.target.value)}
           required
         />
@@ -73,7 +79,6 @@ export const FormConvidado = ({
             label="Senha do Convidado"
             type="password"
             value={visitorPassword}
-            placeholder="********"
             onChange={(e) => setVisitorPassword(e.target.value)}
             required={true}
           />
@@ -81,23 +86,38 @@ export const FormConvidado = ({
       )}
 
       <div className="row">
+        {/* CHECKLIST DE SALAS */}
         <div className="col-md-6 mb-4">
           <label className="status-label-refined mb-2 d-block opacity-75">
-            Sala de Acesso
+            Salas de Acesso
           </label>
-          <select
-            className="form-select-tech w-100"
-            value={roomId}
-            onChange={(e) => setRoomId(Number(e.target.value))}
-            required
+          <div
+            className="room-checklist-container border rounded p-2"
+            style={{
+              maxHeight: "150px",
+              overflowY: "auto",
+              backgroundColor: "rgba(255,255,255,0.05)",
+            }}
           >
-            <option value="">Selecionar...</option>
             {rooms.map((room: any) => (
-              <option key={room.roomId} value={room.roomId}>
-                {room.roomName}
-              </option>
+              <div key={room.roomId} className="form-check mb-1">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`room-${room.roomId}`}
+                  checked={roomIds.includes(room.roomId)}
+                  onChange={() => handleCheckboxChange(room.roomId)}
+                />
+                <label
+                  className="form-check-label small"
+                  htmlFor={`room-${room.roomId}`}
+                >
+                  {room.roomName}
+                </label>
+              </div>
             ))}
-          </select>
+          </div>
+          <small className="text-muted">{roomIds.length} selecionada(s)</small>
         </div>
 
         <div className="col-md-6 mb-4">
@@ -126,8 +146,8 @@ export const FormConvidado = ({
         <button
           type="submit"
           className="btn btn-primary-tech flex-grow-1"
-          /* Adicione o data-bs-dismiss para fechar o modal no sucesso se desejar */
-          data-bs-dismiss={visitorEmail && roomId ? "modal" : ""}
+          disabled={roomIds.length === 0} // Evita salvar sem sala
+          data-bs-dismiss={visitorEmail && roomIds.length > 0 ? "modal" : ""}
         >
           {botaoLabel}
         </button>
