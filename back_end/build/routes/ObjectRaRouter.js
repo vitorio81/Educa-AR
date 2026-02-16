@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const ObjectRaController_1 = require("../controller/ObjectRaController");
+const ObjectRaModelRepository_1 = require("../repositories/objectRa/ObjectRaModelRepository");
+const objectRouter = (0, express_1.Router)();
+const objectRaRepo = new ObjectRaModelRepository_1.ObjectRaModelRepository();
+const objectRaController = new ObjectRaController_1.ObjectRaController(objectRaRepo);
+objectRouter.get("/objectsRa", objectRaController.index);
+objectRouter.post("/objectsRa", objectRaController.store);
+objectRouter.get("/objectsRa/:id", objectRaController.show);
+objectRouter.put("/objectsRa/:id", objectRaController.update);
+objectRouter.delete("/objectsRa/:id", objectRaController.delete);
+exports.default = objectRouter;

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_controller_1 = require("../controller/auth.controller");
+const auth_service_1 = require("../services/auth.service");
+const UserModelRepository_1 = require("../repositories/user/UserModelRepository");
+const router = (0, express_1.Router)();
+const userRepo = new UserModelRepository_1.UserMysqlRepository();
+const authService = new auth_service_1.AuthService(userRepo);
+const authController = new auth_controller_1.AuthController(authService);
+router.post("/login", authController.login);
+exports.default = router;

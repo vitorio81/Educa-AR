@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const visitor_controller_1 = require("../controller/visitor.controller");
+const VisitorModelRespository_1 = require("../repositories/visitor/VisitorModelRespository");
+const RoomModelRepository_1 = require("../repositories/room/RoomModelRepository");
+const visitorRouter = (0, express_1.Router)();
+const visitorRepo = new VisitorModelRespository_1.VisitorMysqlRepository();
+const roomRepo = new RoomModelRepository_1.RoomMySQLRepository();
+const visitorController = new visitor_controller_1.VisitorController(visitorRepo, roomRepo);
+visitorRouter.get("/visitors", visitorController.indexAll);
+visitorRouter.get("/visitors/user/:userId", visitorController.indexByUser);
+visitorRouter.get("/visitors/room/:roomId", visitorController.indexByRoom);
+visitorRouter.post("/visitor", visitorController.store);
+visitorRouter.get("/visitor/:visitorId", visitorController.show);
+visitorRouter.put("/visitor/:visitorId", visitorController.update);
+visitorRouter.delete("/visitor/:visitorId", visitorController.delete);
+exports.default = visitorRouter;

@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const RoomController_1 = require("../controller/RoomController");
+const RoomModelRepository_1 = require("../repositories/room/RoomModelRepository");
+const UserModelRepository_1 = require("../repositories/user/UserModelRepository");
+const roomRouter = (0, express_1.Router)();
+const roomRepo = new RoomModelRepository_1.RoomModelRepository();
+const userRepo = new UserModelRepository_1.UserModelRepository();
+const roomController = new RoomController_1.RoomController(roomRepo, userRepo);
+roomRouter.get("/rooms", roomController.index);
+roomRouter.post("/room", roomController.store);
+roomRouter.get("/rooms/:codeRoom", roomController.show);
+roomRouter.put("/rooms/:codeRoom", roomController.update);
+roomRouter.delete("/rooms/:codeRoom", roomController.delete);
+exports.default = roomRouter;

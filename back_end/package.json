@@ -1,0 +1,47 @@
+{
+  "name": "educa-ar",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000E\u0000d\u0000u\u0000c\u0000a\u0000-\u0000A\u0000R\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "db:bootstrap": "ts-node src/config/database/bootstrap.ts",
+    "start": "node build/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitorio81/Educa-AR.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vitorio81/Educa-AR/issues"
+  },
+  "homepage": "https://github.com/vitorio81/Educa-AR#readme",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.990.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1",
+    "mysql2": "^3.17.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.10.13",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.3"
+  }
+}
