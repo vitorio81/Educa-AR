@@ -19,7 +19,10 @@ interface FormObjetoProps {
   botaoLabel: string;
   rooms: Room[];
   initialData?: Partial<ObjetoFormData>;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (
+    data: FormData,
+    onProgress: (progress: number) => void,
+  ) => Promise<void>;
 }
 
 export const FormObjeto = ({
@@ -33,6 +36,7 @@ export const FormObjeto = ({
   const [roomId, setRoomId] = useState<number | "">("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (initialData) {
@@ -51,13 +55,17 @@ export const FormObjeto = ({
     formData.append("objectDescription", objectDescription);
     formData.append("roomId", String(roomId));
 
-    if (file) {
-      formData.append("file", file);
+    if (!file) {
+      alert("Selecione um arquivo 3D");
+      return;
     }
+
+    formData.append("file", file);
+
 
     try {
       setLoading(true);
-      await onSubmit(formData);
+      await onSubmit(formData, (value) => setProgress(value));
     } finally {
       setLoading(false);
     }
@@ -134,9 +142,14 @@ export const FormObjeto = ({
               file ? "border-info border-opacity-50 bg-info bg-opacity-10" : ""
             }`}
           >
-            <UploadCloud size={28} className={file ? "text-info" : "text-cyan opacity-75"} />
-            
-            <span className={`small fw-medium ${file ? "text-info" : "text-white"}`}>
+            <UploadCloud
+              size={28}
+              className={file ? "text-info" : "text-cyan opacity-75"}
+            />
+
+            <span
+              className={`small fw-medium ${file ? "text-info" : "text-white"}`}
+            >
               {file ? file.name : "Arraste o arquivo ou clique aqui"}
             </span>
 
@@ -167,7 +180,11 @@ export const FormObjeto = ({
         >
           {loading ? (
             <>
-              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
               <span>Processando...</span>
             </>
           ) : (
@@ -175,6 +192,17 @@ export const FormObjeto = ({
           )}
         </button>
       </div>
+      {progress > 0 && (
+        <div className="progress mt-2">
+          <div
+            className="progress-bar"
+            role="progressbar"
+            style={{ width: `${progress}%` }}
+          >
+            {progress}%
+          </div>
+        </div>
+      )}
     </form>
   );
 };

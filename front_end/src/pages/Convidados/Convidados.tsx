@@ -25,7 +25,6 @@ export const Convidados = () => {
   const [selectedRoom, setSelectedRoom] = useState<number | undefined>(
     urlRoomId ? Number(urlRoomId) : undefined,
   );
-
   const [selecionado, setSelecionado] = useState<Convidado | null>(null);
 
   // 2. Hook de convidados agora escuta o selectedRoom

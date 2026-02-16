@@ -52,7 +52,7 @@ export const useObjetos = (
   }, [fetchObjetos]);
 
   // ✅ Criar Objeto
-  const handleCreate = async (data: any) => {
+  const handleCreate = async (data: FormData) => {
     try {
       setError(null);
 
@@ -67,7 +67,7 @@ export const useObjetos = (
   };
 
   // ✅ Atualizar Objeto
-  const handleUpdate = async (objectId: number, data: any) => {
+  const handleUpdate = async (objectId: number, data: FormData) => {
     try {
       setError(null);
 
