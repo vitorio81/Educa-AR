@@ -7,6 +7,8 @@ export interface ObjectRaRepository {
 
   findByRoomId(roomId: number): Promise<ObjectRa[]>;
 
+  findByRoomObjectId(roomId: number, objectId: number): Promise<ObjectRa | null>;
+
   findById(objectId: number): Promise<ObjectRa | null>;
 
   create(

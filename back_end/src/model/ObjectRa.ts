@@ -14,4 +14,8 @@ export class ObjectRa {
   get data(): ObjectRaAttributes {
     return this.attributes;
   }
+
+  toJSON(): ObjectRaAttributes {
+    return this.attributes;
+  }
 }

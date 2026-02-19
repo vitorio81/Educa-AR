@@ -12,7 +12,7 @@ export class R2UploadService {
   constructor() {
     this.client = new S3Client({
       region: "auto",
-      endpoint: `https:/${config.accountId}}.r2.cloudflarestorage.com`,
+      endpoint: `https://${config.accountId}.r2.cloudflarestorage.com`,
       credentials: {
         accessKeyId: config.accessKey,
         secretAccessKey: config.secretKey,
@@ -32,7 +32,9 @@ export class R2UploadService {
       }),
     );
 
-    return `https://${config.bucketName}.${config.accountId}.r2.cloudflarestorage.com/${fileKey}`;
+    const publicUrl = `${config.r2PublicUrl}/${fileKey}`;
+
+    return publicUrl;
   }
 
   async deleteFile(key: string) {

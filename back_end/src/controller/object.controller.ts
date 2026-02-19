@@ -36,6 +36,30 @@ export class ObjectRaController {
     res.json(objects);
   };
 
+  showByRoom: Handler = async (req, res) => {
+    const { roomId, objectId } = req.params;
+    console.log("ShowByRoom called with:", { roomId, objectId });
+
+    const roomExists = await this.roomRepo.findById(Number(roomId));
+    console.log("Room:", roomExists);
+
+    if (!roomExists) {
+      throw new HttpError(404, "Room not found");
+    }
+
+    const objectRa = await this.objectRaRepo.findByRoomObjectId(
+      Number(roomId),
+      Number(objectId),
+    );
+
+    console.log("Object:", objectRa);
+    
+    if (!objectRa) {
+      throw new HttpError(404, "Object RA not found in this room");
+    }
+    res.json(objectRa);
+  };
+
   index: Handler = async (req, res) => {
     const { roomId } = req.params;
 
@@ -51,7 +75,10 @@ export class ObjectRaController {
   };
 
   store: Handler = async (req, res) => {
-    const parsed = ObjectStoreSchema.safeParse(req.body);
+    const parsed = ObjectStoreSchema.safeParse({
+      ...req.body,
+      roomId: Number(req.body.roomId),
+    });
 
     if (!parsed.success) {
       throw new HttpError(400, "Invalid object RA data");

@@ -52,6 +52,28 @@ export class ObjectRaMysqlRepository implements ObjectRaRepository {
     return rows.map((row) => this.map(row));
   }
 
+  async findByRoomObjectId(
+    roomId: number,
+    objectId: number,
+  ): Promise<ObjectRa | null> {
+    const [rows] = await pool.query<ObjectRow[]>(
+      `
+    SELECT *
+    FROM objects
+    WHERE room_id = ?
+      AND object_id = ?
+    LIMIT 1
+    `,
+      [roomId, objectId],
+    );
+
+     if (rows.length === 0) {
+    return null;
+  }
+
+    return this.map(rows[0]);
+  }
+
   async findById(objectId: number): Promise<ObjectRa | null> {
     const [rows] = await pool.query<ObjectRow[]>(
       `SELECT * FROM objects WHERE object_id = ?`,

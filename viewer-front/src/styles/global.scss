@@ -1,0 +1,84 @@
+@use "./variables" as *;
+@import "bootstrap/scss/bootstrap";
+
+// Reset básico
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: $bg-dark;
+  color: $text-main;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+// Estilo da "Carta" com efeito de vidro
+.tech-card {
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  border: 1px solid $glass-border;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    border-color: rgba($primary-cyan, 0.3);
+  }
+}
+
+// Botão estilo Neon
+.btn-primary-tech {
+  background: $primary-cyan;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: $shadow-glow;
+
+  &:hover:not(:disabled) {
+    background: lighten($primary-cyan, 10%);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba($primary-cyan, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Inputs customizados
+.form-control {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid $glass-border !important;
+  color: #fff !important;
+  padding: 0.75rem 1rem;
+  
+  &:focus {
+    border-color: $primary-cyan !important;
+    box-shadow: 0 0 0 4px rgba($primary-cyan, 0.1) !important;
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// Utilitários
+.text-cyan { color: $primary-cyan; }
+.text-muted-custom { color: $text-muted; }
+.status-label-refined {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: $text-muted;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

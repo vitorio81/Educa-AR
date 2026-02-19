@@ -16,6 +16,7 @@ objectRouter.get("/objectsRa/user/:userId", objectRaController.indexByUser);
 objectRouter.get("/objectsRa/room/:roomId", objectRaController.index);
 objectRouter.post("/objectsRa", upload_middleware_1.upload.single("file"), objectRaController.store);
 objectRouter.get("/objectsRa/:objectId", objectRaController.show);
+objectRouter.get("/rooms/:roomId/objects/:objectId", objectRaController.showByRoom);
 objectRouter.put("/objectsRa/:objectId", upload_middleware_1.upload.single("file"), objectRaController.update);
 objectRouter.put("/objectsRa/:objectId", upload_middleware_1.upload.single("file"), objectRaController.update);
 objectRouter.delete("/objectsRa/:objectId", objectRaController.delete);

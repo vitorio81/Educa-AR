@@ -17,7 +17,7 @@ class R2UploadService {
     constructor() {
         this.client = new client_s3_1.S3Client({
             region: "auto",
-            endpoint: `https:/${env_1.config.accountId}}.r2.cloudflarestorage.com`,
+            endpoint: `https://${env_1.config.accountId}.r2.cloudflarestorage.com`,
             credentials: {
                 accessKeyId: env_1.config.accessKey,
                 secretAccessKey: env_1.config.secretKey,
@@ -33,7 +33,8 @@ class R2UploadService {
                 Body: file.buffer,
                 ContentType: file.mimetype,
             }));
-            return `https://${env_1.config.bucketName}.${env_1.config.accountId}.r2.cloudflarestorage.com/${fileKey}`;
+            const publicUrl = `${env_1.config.r2PublicUrl}/${fileKey}`;
+            return publicUrl;
         });
     }
     deleteFile(key) {

@@ -44,6 +44,21 @@ class ObjectRaMysqlRepository {
             return rows.map((row) => this.map(row));
         });
     }
+    findByRoomObjectId(roomId, objectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [rows] = yield connection_1.pool.query(`
+    SELECT *
+    FROM objects
+    WHERE room_id = ?
+      AND object_id = ?
+    LIMIT 1
+    `, [roomId, objectId]);
+            if (rows.length === 0) {
+                return null;
+            }
+            return this.map(rows[0]);
+        });
+    }
     findById(objectId) {
         return __awaiter(this, void 0, void 0, function* () {
             const [rows] = yield connection_1.pool.query(`SELECT * FROM objects WHERE object_id = ?`, [objectId]);

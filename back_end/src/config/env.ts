@@ -31,4 +31,5 @@ export const config = {
   accountId: process.env.ACCOUNT_ID!,
   accessKey: process.env.ACCESS_KEY!,
   secretKey: process.env.SECRET_KEY!,
+  r2PublicUrl: process.env.R2_PUBLIC_URL!,
 };

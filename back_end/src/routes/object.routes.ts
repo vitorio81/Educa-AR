@@ -27,6 +27,8 @@ objectRouter.post(
 );
 
 objectRouter.get("/objectsRa/:objectId", objectRaController.show);
+objectRouter.get("/rooms/:roomId/objects/:objectId", objectRaController.showByRoom);
+
 objectRouter.put(
   "/objectsRa/:objectId",
   upload.single("file"),

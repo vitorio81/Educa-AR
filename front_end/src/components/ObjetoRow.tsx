@@ -1,5 +1,6 @@
-import React, { memo } from "react";
-import { MoreVertical, Edit3, Trash2, Package, Download } from "lucide-react";
+import { memo } from "react";
+import { useState } from "react";
+import { MoreVertical, Edit3, Trash2, Package, Download, Eye, Copy } from "lucide-react";
 
 interface Objeto {
   objectId: number;
@@ -12,10 +13,12 @@ interface ObjetoRowProps {
   objeto: Objeto;
   onDelete: (id: number) => void;
   onEdit: (objeto: Objeto) => void;
+  userId: number; 
+  roomId: number;
 }
 
 export const ObjetoRow = memo(
-  ({ objeto, onDelete, onEdit }: ObjetoRowProps) => {
+  ({ objeto, onDelete, onEdit, userId, roomId }: ObjetoRowProps) => {
     const handleDelete = () => {
       // Usando uma confirmação simples, mas mantendo o contexto do objeto
       if (
@@ -31,6 +34,9 @@ export const ObjetoRow = memo(
       if (!objeto.objectUrl) return;
       window.open(objeto.objectUrl, "_blank");
     };
+
+    const [copied, setCopied] = useState(false);
+    const shareableLink = `${import.meta.env.VITE_VIEWER_URL}/?roomId=${roomId}&userId=${userId}&objectId=${objeto.objectId}`; 
 
     return (
       <tr className="align-middle border-bottom border-secondary border-opacity-10 table-row-hover">
@@ -64,7 +70,18 @@ export const ObjetoRow = memo(
         {/* Coluna de Ações */}
         <td className="text-end pe-4 py-4">
           <div className="d-flex justify-content-end gap-2">
-            {/* Download/Abrir com visual condicional */}
+            {/* NOVO: Link de Visualização Direta (Olho) */}
+            <a
+              href={shareableLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-action-sutil"
+              title="Visualizar em 3D"
+            >
+              <Eye size={18} />
+            </a>
+
+            {/* Download Original */}
             <button
               className={`btn btn-action-sutil ${!objeto.objectUrl ? "opacity-25" : ""}`}
               title={
@@ -87,6 +104,24 @@ export const ObjetoRow = memo(
               </button>
 
               <ul className="dropdown-menu dropdown-menu-end shadow-lg border-secondary border-opacity-25 glass-effect">
+                {/* NOVO: Opção de Copiar Link para enviar ao usuário */}
+                <li>
+                  <button
+                    className="dropdown-item d-flex align-items-center gap-2 text-white"
+                    onClick={() => {;
+                      navigator.clipboard.writeText(shareableLink);
+                      alert("Link de visualização copiado!");
+                    }}
+                  >
+                    <Copy size={14} className="text-cyan" />
+                    <span>Copiar Link de Acesso</span>
+                  </button>
+                </li>
+
+                <li>
+                  <hr className="dropdown-divider border-secondary opacity-25" />
+                </li>
+
                 <li>
                   <button
                     className="dropdown-item d-flex align-items-center gap-2 text-white"
@@ -97,10 +132,6 @@ export const ObjetoRow = memo(
                     <Edit3 size={14} className="text-cyan" />
                     <span>Editar Dados</span>
                   </button>
-                </li>
-
-                <li>
-                  <hr className="dropdown-divider border-secondary opacity-25" />
                 </li>
 
                 <li>

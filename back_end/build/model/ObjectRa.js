@@ -8,5 +8,8 @@ class ObjectRa {
     get data() {
         return this.attributes;
     }
+    toJSON() {
+        return this.attributes;
+    }
 }
 exports.ObjectRa = ObjectRa;

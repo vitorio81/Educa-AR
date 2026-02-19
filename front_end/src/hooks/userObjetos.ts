@@ -50,12 +50,12 @@ export const useObjetos = (
   useEffect(() => {
     fetchObjetos();
   }, [fetchObjetos]);
-
+  
   // ✅ Criar Objeto
   const handleCreate = async (data: FormData) => {
     try {
       setError(null);
-
+      console.log("Criando objeto com dados:", Object.fromEntries(data.entries()));
       await objetoService.create(data);
 
       await fetchObjetos();

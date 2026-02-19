@@ -11,6 +11,11 @@ export interface VisitorRepository {
 
   findByEmail(visitorEmail: string): Promise<Visitor | null>;
 
+  findByEmailAndRoom(
+    roomId: number,
+    visitorEmail: string,
+  ): Promise<Visitor | null>;
+
   findByEmailAndRooms(
     roomIds: number[],
     visitorEmail: string,

@@ -62,6 +62,15 @@ class VisitorMysqlRepository {
             return this.map(rows[0]);
         });
     }
+    findByEmailAndRoom(roomId, visitorEmail) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const visitor = yield this.findByEmail(visitorEmail);
+            if (!visitor)
+                return null;
+            const hasRoom = visitor.data.roomIds.includes(roomId);
+            return hasRoom ? visitor : null;
+        });
+    }
     findByEmailAndRooms(roomIds, visitorEmail) {
         return __awaiter(this, void 0, void 0, function* () {
             const visitor = yield this.findByEmail(visitorEmail);

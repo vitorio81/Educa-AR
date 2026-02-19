@@ -62,6 +62,18 @@ export class VisitorMysqlRepository implements VisitorRepository {
     return this.map(rows[0]);
   }
 
+  async findByEmailAndRoom(
+    roomId: number,
+    visitorEmail: string,
+  ): Promise<Visitor | null> {
+    const visitor = await this.findByEmail(visitorEmail);
+    if (!visitor) return null;
+
+    const hasRoom = visitor.data.roomIds.includes(roomId);
+
+    return hasRoom ? visitor : null;
+  }
+
   async findByEmailAndRooms(
     roomIds: number[],
     visitorEmail: string,

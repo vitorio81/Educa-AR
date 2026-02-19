@@ -8,6 +8,7 @@ import roomRouter from "./routes/room.routes";
 import visitorRouter from "./routes/visitor.routes";
 import objectRouter from "./routes/object.routes";
 import authRoutes from "./routes/auth.routes";
+import viewerAuthRoutes from "./routes/auth.viewer.routes";
 
 import { errorHandler } from "./errors/errorHandler";
 import { authMiddleware } from "./middlewares/auth.middleware";
@@ -15,7 +16,11 @@ import { authMiddleware } from "./middlewares/auth.middleware";
 const app = express();
 
 const frontUrl = config.urlApiFront;
-const allowedOrigins = [frontUrl, "http://localhost:5173"];
+const allowedOrigins = [
+  frontUrl,
+  "http://localhost:5173",
+  "http://localhost:5174",
+];
 
 app.use(
   cors({
@@ -30,6 +35,7 @@ app.use(
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // 🔥 ISSO AQUI RESOLVE
   }),
 );
 
@@ -38,6 +44,8 @@ app.use(express.json());
 // ================= ROUTES =================
 
 app.use("/auth", authRoutes);
+app.use("/api", viewerAuthRoutes);
+
 
 app.use("/api", userRouter);
 app.use("/api", authMiddleware, roomRouter);

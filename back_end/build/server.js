@@ -21,11 +21,16 @@ const room_routes_1 = __importDefault(require("./routes/room.routes"));
 const visitor_routes_1 = __importDefault(require("./routes/visitor.routes"));
 const object_routes_1 = __importDefault(require("./routes/object.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const auth_viewer_routes_1 = __importDefault(require("./routes/auth.viewer.routes"));
 const errorHandler_1 = require("./errors/errorHandler");
 const auth_middleware_1 = require("./middlewares/auth.middleware");
 const app = (0, express_1.default)();
 const frontUrl = env_1.config.urlApiFront;
-const allowedOrigins = [frontUrl, "http://localhost:5173"];
+const allowedOrigins = [
+    frontUrl,
+    "http://localhost:5173",
+    "http://localhost:5174",
+];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -37,10 +42,12 @@ app.use((0, cors_1.default)({
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // 🔥 ISSO AQUI RESOLVE
 }));
 app.use(express_1.default.json());
 // ================= ROUTES =================
 app.use("/auth", auth_routes_1.default);
+app.use("/api", auth_viewer_routes_1.default);
 app.use("/api", user_routes_1.default);
 app.use("/api", auth_middleware_1.authMiddleware, room_routes_1.default);
 app.use("/api", auth_middleware_1.authMiddleware, object_routes_1.default);
