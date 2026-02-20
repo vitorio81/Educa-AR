@@ -27,19 +27,27 @@ export const RoomForm = ({
     }
   }, [dadosIniciais]);
 
+  const resetForm = () => {
+    setRoomName("");
+    setRoomDescription("");
+    setRoomStatus("ativa");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await onSubmit({
-      roomId: dadosIniciais?.roomId,
-      roomName,
-      roomDescription,
-      roomStatus,
-    });
+    try {
+      await onSubmit({
+        roomId: dadosIniciais?.roomId,
+        roomName,
+        roomDescription,
+        roomStatus,
+      });
 
-    const modal = document.getElementById("modalRoom");
-    const instance = (window as any).bootstrap.Modal.getInstance(modal);
-    instance?.hide();
+      resetForm();
+    } catch (error) {
+      console.error("Erro ao salvar sala:", error);
+    }
   };
 
 
@@ -93,6 +101,7 @@ export const RoomForm = ({
         <button
           type="submit"
           className="btn btn-cyan w-100 fw-bold shadow-sm"
+          data-bs-dismiss="modal"
         >
           {botaoLabel}
         </button>

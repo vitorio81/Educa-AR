@@ -66,14 +66,16 @@ export const RoomCard = ({ room, onEdit, onDelete }: RoomCardProps) => {
         </div>
 
         <div className="mb-4">
-          <h5 className="text-white fw-bold mb-2">{room.roomName}</h5>
-          <p className="text-muted small mb-0">
+          <h5 className="text-white fw-bold mb-2 text-uppercase">
+            {room.roomName}
+          </h5>
+          <p className="text-muted small mb-0 text-uppercase">
             {room.roomDescription || "Sem descrição definida."}
           </p>
         </div>
 
         <div className="mt-auto pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-2 text-uppercase">
             <span className={`status-dot-pulse ${room.roomStatus}`}></span>
             <span className="text-white-50 small">{room.roomStatus}</span>
           </div>

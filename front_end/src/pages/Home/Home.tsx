@@ -4,7 +4,7 @@ import { BookOpen } from "lucide-react";
 export const Home = () => {
   const storedUser = localStorage.getItem("@EducaAR:user");
   const user = storedUser ? JSON.parse(storedUser) : null;
-  const { rooms, loading, error } = useRooms(user?.userId);
+  const { rooms, loading } = useRooms(user?.userId);
 
   if (loading)
     return (
@@ -34,21 +34,19 @@ export const Home = () => {
                     <div className="icon-box">
                       <BookOpen size={20} className="text-cyan" />
                     </div>
-                    <h5 className="text-white fw-bold mb-0 text-truncate">
+                    <h5 className="text-white fw-bold mb-0 text-truncate text-uppercase">
                       {room.roomName}
                     </h5>
                   </div>
 
-                  <p className="text-muted small flex-grow-1 mb-4">
+                  <p className="text-muted small flex-grow-1 mb-4 text-uppercase">
                     {room.roomDescription ||
                       "Sem descrição disponível para esta turma."}
                   </p>
 
                   <div className="d-flex align-items-center justify-content-between mt-auto pt-3 border-top border-secondary border-opacity-50">
-                    <div className="status-indicator">
-                      <span
-                        className={`status-dot ${room.roomStatus}`}
-                      ></span>
+                    <div className="status-indicator text-uppercase">
+                      <span className={`status-dot ${room.roomStatus}`}></span>
                       <span className="status-text">{room.roomStatus}</span>
                     </div>
                   </div>

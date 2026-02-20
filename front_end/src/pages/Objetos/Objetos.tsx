@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useObjetos } from "../../hooks/userObjetos";
 import { useRooms } from "../../hooks/useRooms";
 import { ObjetoRow } from "../../components/ObjetoRow";
@@ -129,6 +129,7 @@ const Objetos = () => {
                     objeto={obj}
                     onDelete={handleDelete}
                     onEdit={(objeto) => setObjetoSelecionado(objeto)}
+                    userId={userId}
                   />
                 ))}
               </tbody>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import { InputCustom } from "./InputCustom";
-import { UploadCloud, File } from "lucide-react";
+import { UploadCloud} from "lucide-react";
 
 interface Room {
   roomId: number;
@@ -46,6 +46,12 @@ export const FormObjeto = ({
     }
   }, [initialData]);
 
+  const resetForm = () => {
+    setObjectName("");
+    setObjectDescription("");
+    setRoomId("");
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!roomId) return alert("Por favor, selecione uma sala para este objeto.");
@@ -61,7 +67,7 @@ export const FormObjeto = ({
     }
 
     formData.append("file", file);
-
+    resetForm();
 
     try {
       setLoading(true);
@@ -73,7 +79,6 @@ export const FormObjeto = ({
 
   return (
     <form className="mt-2" onSubmit={handleSubmit}>
-      {/* Nome do Objeto */}
       <div className="mb-4">
         <InputCustom
           label="Nome do Objeto"
@@ -162,7 +167,7 @@ export const FormObjeto = ({
         </div>
       </div>
 
-      {/* Footer com botões Tech */}
+ 
       <div className="modal-footer border-top border-secondary border-opacity-10 p-0 pt-4 mt-4 d-flex gap-3">
         <button
           type="button"
@@ -177,6 +182,7 @@ export const FormObjeto = ({
           type="submit"
           disabled={loading}
           className="btn btn-primary-tech flex-grow-1 py-2 d-flex align-items-center justify-content-center gap-2"
+          data-bs-dismiss="modal"
         >
           {loading ? (
             <>

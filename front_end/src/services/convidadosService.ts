@@ -25,5 +25,5 @@ export const convidadoService = {
     api.put(`/visitor/${id}`, data, getHeaders()).then((res) => res.data),
 
   delete: (id: number) =>
-    api.delete(`/visitors/${id}`, getHeaders()).then((res) => res.data),
+    api.delete(`/visitor/${id}`, getHeaders()).then((res) => res.data),
 };

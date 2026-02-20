@@ -62,7 +62,7 @@ export const useRooms = (userId: number | undefined) => {
 
   // Função para Deletar Turma
   const handleDelete = async (roomId: number) => {
-    if (!window.confirm("Tem certeza que deseja excluir esta turma?")) return;
+    if (!window.confirm("Tem certeza que deseja excluir esta turma?\nESTA AÇÃO IRÁ ESCLUIR EM CONJUNTO OS OBJETOS QUE ESTÃO VINCULADOS A TURMA.")) return;
 
     try {
       setError(null);

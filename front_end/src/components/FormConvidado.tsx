@@ -33,8 +33,8 @@ export const FormConvidado = ({
     setRoomIds(
       (prev) =>
         prev.includes(roomId)
-          ? prev.filter((id) => id !== roomId) // Remove se já estiver selecionado
-          : [...prev, roomId], // Adiciona se não estiver
+          ? prev.filter((id) => id !== roomId) 
+          : [...prev, roomId], 
     );
   };
 

@@ -10,57 +10,57 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-async function handleLogin(e: React.FormEvent) {
-  e.preventDefault();
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
 
-  if (!userId || !roomId || !objectId) {
-    alert("Link inválido");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const apiUrl = import.meta.env.VITE_API_URL_LOGIN;
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: Number(userId),
-        roomId: Number(roomId),
-        objectId: Number(objectId),
-        email,
-        password,
-      }),
-    });
-
-    console.log(userId, roomId, objectId, email, password);
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Erro ao autenticar");
+    if (!userId || !roomId || !objectId) {
+      alert("Link inválido");
+      return;
     }
 
-    console.log("Login realizado:", data);
+    setLoading(true);
 
-    // ✅ SALVA TOKEN
-    localStorage.setItem("token", data.data.token);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL_LOGIN;
 
-    // contexto viewer
-    localStorage.setItem(
-      "viewerContext",
-      JSON.stringify({ userId, roomId, objectId }),
-    );
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: Number(userId),
+          roomId: Number(roomId),
+          objectId: Number(objectId),
+          email,
+          password,
+        }),
+      });
 
-    navigate("/viewer");
-  } catch (err: any) {
-    alert(err.message);
-  } finally {
-    setLoading(false);
+      console.log(userId, roomId, objectId, email, password);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erro ao autenticar");
+      }
+
+      console.log("Login realizado:", data);
+
+      // ✅ SALVA TOKEN
+      localStorage.setItem("token", data.data.token);
+
+      // contexto viewer
+      localStorage.setItem(
+        "viewerContext",
+        JSON.stringify({ userId, roomId, objectId }),
+      );
+
+      navigate("/viewer");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
   return (
     <div className="vh-100 d-flex align-items-center justify-content-center bg-dark px-3">

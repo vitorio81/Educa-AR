@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { useState } from "react";
 import { MoreVertical, Edit3, Trash2, Package, Download, Eye, Copy } from "lucide-react";
 
 interface Objeto {
@@ -7,6 +6,7 @@ interface Objeto {
   objectName: string;
   objectDescription?: string;
   objectUrl?: string;
+  roomId: number;
 }
 
 interface ObjetoRowProps {
@@ -14,11 +14,10 @@ interface ObjetoRowProps {
   onDelete: (id: number) => void;
   onEdit: (objeto: Objeto) => void;
   userId: number; 
-  roomId: number;
 }
 
 export const ObjetoRow = memo(
-  ({ objeto, onDelete, onEdit, userId, roomId }: ObjetoRowProps) => {
+  ({ objeto, onDelete, onEdit, userId}: ObjetoRowProps) => {
     const handleDelete = () => {
       // Usando uma confirmação simples, mas mantendo o contexto do objeto
       if (
@@ -34,9 +33,8 @@ export const ObjetoRow = memo(
       if (!objeto.objectUrl) return;
       window.open(objeto.objectUrl, "_blank");
     };
-
-    const [copied, setCopied] = useState(false);
-    const shareableLink = `${import.meta.env.VITE_VIEWER_URL}/?roomId=${roomId}&userId=${userId}&objectId=${objeto.objectId}`; 
+    
+    const shareableLink = `${import.meta.env.VITE_VIEWER_URL}/?roomId=${objeto.roomId}&userId=${userId}&objectId=${objeto.objectId}`; 
 
     return (
       <tr className="align-middle border-bottom border-secondary border-opacity-10 table-row-hover">
@@ -51,12 +49,12 @@ export const ObjetoRow = memo(
             </div>
 
             <div className="overflow-hidden">
-              <span className="text-white fw-medium d-block tracking-tight">
+              <span className="text-white fw-medium d-block tracking-tight text-uppercase">
                 {objeto.objectName}
               </span>
               {objeto.objectDescription && (
                 <span
-                  className="text-muted-custom small d-block text-truncate"
+                  className="text-muted-custom small d-block text-truncate text-uppercase"
                   style={{ maxWidth: "450px" }}
                   title={objeto.objectDescription}
                 >
@@ -108,7 +106,7 @@ export const ObjetoRow = memo(
                 <li>
                   <button
                     className="dropdown-item d-flex align-items-center gap-2 text-white"
-                    onClick={() => {;
+                    onClick={() => {
                       navigator.clipboard.writeText(shareableLink);
                       alert("Link de visualização copiado!");
                     }}
