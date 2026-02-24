@@ -34,7 +34,7 @@ export const ObjetoRow = memo(
       window.open(objeto.objectUrl, "_blank");
     };
     
-    const shareableLink = `${import.meta.env.VITE_VIEWER_URL}/?roomId=${objeto.roomId}&userId=${userId}&objectId=${objeto.objectId}`; 
+    const shareableLink = `${import.meta.env.VITE_VIEWER_URL}?&userId=${userId}&roomId=${objeto.roomId}&objectId=${objeto.objectId}`; 
 
     return (
       <tr className="align-middle border-bottom border-secondary border-opacity-10 table-row-hover">
